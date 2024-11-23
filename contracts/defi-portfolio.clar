@@ -95,3 +95,19 @@
     (map-set UserPortfolios user new-portfolios)
     (ok true)
 ))
+
+(define-private (initialize-portfolio-asset (index uint) (token principal) (percentage uint) (portfolio-id uint))
+    (if (>= percentage u0)  ;; Only check percentage validity since principal is already a valid type
+        (begin
+            (map-set PortfolioAssets
+                {portfolio-id: portfolio-id, token-id: index}
+                {
+                    target-percentage: percentage,
+                    current-amount: u0,
+                    token-address: token
+                }
+            )
+            (ok true))
+        ERR-INVALID-TOKEN
+    )
+)
