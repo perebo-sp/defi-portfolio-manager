@@ -43,3 +43,8 @@
         token-address: principal
     }
 )
+
+(define-map UserPortfolios
+    principal
+    (list 20 uint)
+)
