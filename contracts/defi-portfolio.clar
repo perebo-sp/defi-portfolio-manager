@@ -177,3 +177,23 @@
     
     (ok true))
 )
+
+
+(define-public (update-portfolio-allocation 
+    (portfolio-id uint) 
+    (token-id uint)
+    (new-percentage uint))
+    (let (
+        (portfolio (unwrap! (get-portfolio portfolio-id) ERR-INVALID-PORTFOLIO))
+        (asset (unwrap! (get-portfolio-asset portfolio-id token-id) ERR-INVALID-TOKEN))
+    )
+    (asserts! (is-eq tx-sender (get owner portfolio)) ERR-NOT-AUTHORIZED)
+    (asserts! (validate-percentage new-percentage) ERR-INVALID-PERCENTAGE)
+    
+    (map-set PortfolioAssets
+        {portfolio-id: portfolio-id, token-id: token-id}
+        (merge asset {target-percentage: new-percentage})
+    )
+    
+    (ok true))
+)
