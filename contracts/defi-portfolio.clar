@@ -53,3 +53,23 @@
 (define-read-only (get-portfolio (portfolio-id uint))
     (map-get? Portfolios portfolio-id)
 )
+
+(define-read-only (get-portfolio-asset (portfolio-id uint) (token-id uint))
+    (map-get? PortfolioAssets {portfolio-id: portfolio-id, token-id: token-id})
+)
+
+(define-read-only (get-user-portfolios (user principal))
+    (default-to (list) (map-get? UserPortfolios user))
+)
+
+(define-read-only (calculate-rebalance-amounts (portfolio-id uint))
+    (let (
+        (portfolio (unwrap! (get-portfolio portfolio-id) ERR-INVALID-PORTFOLIO))
+        (total-value (get total-value portfolio))
+    )
+    (ok {
+        portfolio-id: portfolio-id,
+        total-value: total-value,
+        needs-rebalance: (> (- block-height (get last-rebalanced portfolio)) u144) ;; 24 hours in blocks
+    }))
+)
