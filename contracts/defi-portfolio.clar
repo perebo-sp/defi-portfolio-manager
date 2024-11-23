@@ -197,3 +197,11 @@
     
     (ok true))
 )
+
+;; Contract initialization
+(define-public (initialize (new-owner principal))
+    (begin
+        (asserts! (is-eq tx-sender (var-get protocol-owner)) ERR-NOT-AUTHORIZED)
+        (var-set protocol-owner new-owner)
+        (ok true))
+)
