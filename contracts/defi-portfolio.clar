@@ -13,6 +13,7 @@
 (define-constant ERR-MAX-TOKENS-EXCEEDED (err u107))
 (define-constant ERR-LENGTH-MISMATCH (err u108))
 (define-constant ERR-USER-STORAGE-FAILED (err u109))
+(define-constant ERR-INVALID-TOKEN-ID (err u110)) 
 
 ;; Data Variables
 (define-data-var protocol-owner principal tx-sender)
@@ -31,7 +32,8 @@
         created-at: uint,
         last-rebalanced: uint,
         total-value: uint,
-        active: bool
+        active: bool,
+		token-count: uint
     }
 )
 
@@ -75,6 +77,17 @@
 )
 
 ;; Private functions
+(define-private (validate-token-id (portfolio-id uint) (token-id uint))
+    (let (
+        (portfolio (unwrap! (get-portfolio portfolio-id) false))
+    )
+    (and 
+        (< token-id MAX-TOKENS-PER-PORTFOLIO)
+        (< token-id (get token-count portfolio))
+        true
+    ))
+)
+
 (define-private (validate-percentage (percentage uint))
     (and (>= percentage u0) (<= percentage BASIS-POINTS))
 )
@@ -178,7 +191,6 @@
     (ok true))
 )
 
-
 (define-public (update-portfolio-allocation 
     (portfolio-id uint) 
     (token-id uint)
@@ -189,6 +201,7 @@
     )
     (asserts! (is-eq tx-sender (get owner portfolio)) ERR-NOT-AUTHORIZED)
     (asserts! (validate-percentage new-percentage) ERR-INVALID-PERCENTAGE)
+    (asserts! (validate-token-id portfolio-id token-id) ERR-INVALID-TOKEN-ID)
     
     (map-set PortfolioAssets
         {portfolio-id: portfolio-id, token-id: token-id}
@@ -202,6 +215,7 @@
 (define-public (initialize (new-owner principal))
     (begin
         (asserts! (is-eq tx-sender (var-get protocol-owner)) ERR-NOT-AUTHORIZED)
+        (asserts! (not (is-eq new-owner tx-sender)) ERR-NOT-AUTHORIZED)  ;; Prevent self-assignment
         (var-set protocol-owner new-owner)
         (ok true))
 )
