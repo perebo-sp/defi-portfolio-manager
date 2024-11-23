@@ -34,3 +34,12 @@
         active: bool
     }
 )
+
+(define-map PortfolioAssets
+    {portfolio-id: uint, token-id: uint}
+    {
+        target-percentage: uint,
+        current-amount: uint,
+        token-address: principal
+    }
+)
