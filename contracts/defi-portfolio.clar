@@ -48,3 +48,8 @@
     principal
     (list 20 uint)
 )
+
+;; Read-only functions
+(define-read-only (get-portfolio (portfolio-id uint))
+    (map-get? Portfolios portfolio-id)
+)
