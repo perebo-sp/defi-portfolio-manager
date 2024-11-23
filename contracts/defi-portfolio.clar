@@ -13,3 +13,8 @@
 (define-constant ERR-MAX-TOKENS-EXCEEDED (err u107))
 (define-constant ERR-LENGTH-MISMATCH (err u108))
 (define-constant ERR-USER-STORAGE-FAILED (err u109))
+
+;; Data Variables
+(define-data-var protocol-owner principal tx-sender)
+(define-data-var portfolio-counter uint u0)
+(define-data-var protocol-fee uint u25) ;; 0.25% represented as basis points
