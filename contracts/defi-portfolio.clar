@@ -13,7 +13,7 @@
 (define-constant ERR-MAX-TOKENS-EXCEEDED (err u107))
 (define-constant ERR-LENGTH-MISMATCH (err u108))
 (define-constant ERR-USER-STORAGE-FAILED (err u109))
-(define-constant ERR-INVALID-TOKEN-ID (err u110)) 
+(define-constant ERR-INVALID-TOKEN-ID (err u110))
 
 ;; Data Variables
 (define-data-var protocol-owner principal tx-sender)
@@ -147,7 +147,8 @@
             created-at: block-height,
             last-rebalanced: block-height,
             total-value: u0,
-            active: true
+            active: true,
+            token-count: token-count
         }
     )
     
