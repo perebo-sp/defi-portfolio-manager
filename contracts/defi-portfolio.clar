@@ -22,3 +22,15 @@
 ;; Constants
 (define-constant MAX-TOKENS-PER-PORTFOLIO u10)
 (define-constant BASIS-POINTS u10000)
+
+;; Data Maps
+(define-map Portfolios
+    uint ;; portfolio-id
+    {
+        owner: principal,
+        created-at: uint,
+        last-rebalanced: uint,
+        total-value: uint,
+        active: bool
+    }
+)
