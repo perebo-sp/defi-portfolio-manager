@@ -162,3 +162,18 @@
     (var-set portfolio-counter portfolio-id)
     (ok portfolio-id))
 )
+
+(define-public (rebalance-portfolio (portfolio-id uint))
+    (let (
+        (portfolio (unwrap! (get-portfolio portfolio-id) ERR-INVALID-PORTFOLIO))
+    )
+    (asserts! (is-eq tx-sender (get owner portfolio)) ERR-NOT-AUTHORIZED)
+    (asserts! (get active portfolio) ERR-INVALID-PORTFOLIO)
+    
+    ;; Update last rebalanced timestamp
+    (map-set Portfolios portfolio-id
+        (merge portfolio {last-rebalanced: block-height})
+    )
+    
+    (ok true))
+)
