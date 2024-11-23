@@ -18,3 +18,7 @@
 (define-data-var protocol-owner principal tx-sender)
 (define-data-var portfolio-counter uint u0)
 (define-data-var protocol-fee uint u25) ;; 0.25% represented as basis points
+
+;; Constants
+(define-constant MAX-TOKENS-PER-PORTFOLIO u10)
+(define-constant BASIS-POINTS u10000)
